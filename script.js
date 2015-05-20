@@ -60,15 +60,57 @@ function tpl_dokuwiki_mobile(){
 
 jQuery(function(){
     var resizeTimer;
-    dw_page.makeToggle('#dokuwiki__aside h3.toggle','#dokuwiki__aside div.content');
+    dw_page.makeToggle2 = function (handle, content, state) {
+        var $handle,
+            $content,
+            $clicky,
+            $child,
+            setClicky;
+        $handle = jQuery(handle);
+        if (!$handle.length) return;
+        $content = jQuery(content);
+        if (!$content.length) return;
+        $child = $content.children().filter(":not(script)");
+        setClicky = function (hiding) {
+            if (hiding) {
+                $clicky.html('<span>+</span>');
+                $handle.addClass('closed');
+                $handle.removeClass('open');
+            } else {
+                $clicky.html('<span>−</span>');
+                $handle.addClass('open');
+                $handle.removeClass('closed');
+            }
+        };
+        $handle[0].setState = function (state) {
+            var hidden;
+            if (!state) state = 1;
+            $content.css('min-height', $content.height()).show();
+            $child.stop(true, true);
+            if (state === - 1) {
+                hidden = false;
+            } else if (state === 1) {
+                hidden = true;
+            } else {
+                hidden = $child.is(':hidden');
+            }
+            setClicky(!hidden);
+            $child.dw_toggle(hidden, function () {
+                $content.toggle(hidden);
+                $content.css('min-height', '');
+            });
+        };
+        $clicky = jQuery(document.createElement('strong'));
+        $handle.css('cursor', 'pointer').click($handle[0].setState).prepend($clicky);
+        $handle[0].setState(state);
+    };
+    dw_page.makeToggle2('#dokuwiki__aside h3.toggle','#dokuwiki__aside div.content');
 
     tpl_dokuwiki_mobile();
-    jQuery(window).bind('resize',
-        function(){
-            if (resizeTimer) clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(tpl_dokuwiki_mobile,200);
-        }
-    );
+    jQuery(window).bind('resize', function(){
+        if (resizeTimer) clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(tpl_dokuwiki_mobile,200);
+    });
 
     // increase sidebar length to match content (desktop mode only)
     var $sidebar = jQuery('.desktop #dokuwiki__aside');
