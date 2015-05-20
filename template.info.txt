@@ -1,7 +1,7 @@
-base     dokuwiki
-author   Anika Henke
-email    anika@selfthinker.org
-date     2014-06-04
-name     DokuWiki Template
-desc     DokuWiki's default template since 2012
-url      http://www.dokuwiki.org/template:dokuwiki
+base     dokuwiki-mizunashi
+author   Mizunashi Mana (orig: Anika Henke)
+email    mizunashi_mana@mma.club.uec.ac.jp
+date     2015-05-20
+name     DokuWiki My Template
+desc     fixed some and based DokuWiki's default template
+url      https://github.com/mizunashi-mana/dokuwiki-mytemplate
